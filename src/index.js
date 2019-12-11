@@ -44,7 +44,10 @@ function renderAllImages(imagesArrays) {
 function fetchBreeds() {
   fetch(breedUrl)
     .then(resp => resp.json())
-    .then(data => getBreeds(data));
+    .then(data => {
+      getBreeds(data);
+      addBreedSelectListener();
+    });
 }
 
 function getBreeds(data) {
@@ -73,11 +76,18 @@ function addBreedSelectListener() {
   let breedDropdown = document.querySelector("#breed-dropdown");
   breedDropdown.addEventListener("change", function(event) {
     filterBreeds(event.target.value);
+    // console.log("WORKING!");
   });
 }
 
 function filterBreeds(letter) {
-  const ul = document.querySelector("#dog-breeds");
-  removeChildren(ul);
-  getAllBreeds(breeds.filter(breed => breed.startsWith(letter)));
+  let lis = document.getElementsByTagName("li");
+  // debugger;
+  for (const li of lis) {
+    if (li.textContent.startsWith(letter) == false) {
+      li.style.display = "none";
+    } else {
+      li.style.display = "";
+    }
+  }
 }
